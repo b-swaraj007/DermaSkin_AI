@@ -1,0 +1,61 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.mason/
+.metadata
+coverage/
+migrate_working_dir/
+
+# Flutter/Dart
+flutter/
+.dart_tool/
+.packages
+build/
+*.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+android/.gradle/
+android/app/build/
+android/local.properties
+android/key.properties
+*.jks
+*.keystore
+
+# iOS
+ios/.symlinks/
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/xcuserdata/
+ios/Runner.xcodeproj/project.xcworkspace/
+ios/Flutter/App.framework/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+
+# Web
+web/.firebase/
+
+# Node
+node_modules/
+
+# macOS
+macos/
+
+# Windows
+windows/
+
+# Linux
+linux/
+
+# IDE
+.idea/
+.vscode/

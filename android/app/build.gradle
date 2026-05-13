@@ -1,0 +1,85 @@
+plugins {
+   id "com.android.application"
+   id "kotlin-android"
+   id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.newDataInputStream())
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
+def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace "com.mycompany.dermascanai"
+
+    compileSdkVersion 34
+    ndkVersion "28.2.13676358"   // ✅ keep this
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId "com.mycompany.dermascanai"
+
+        minSdkVersion flutter.minSdkVersion        // ✅ required
+        targetSdkVersion 34     // ✅ stable
+
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+
+        multiDexEnabled true    // ✅ important
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+            // Resource shrinking requires code shrinking (R8) to be enabled.
+            // Keep both OFF for now so ML Kit / camera classes aren't stripped
+            // without proper proguard rules. Flip both to true together when
+            // you add release proguard rules.
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+
+    // ✅ required for large apps (ML Kit + camera)
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // MediaPipe Face Landmarker
+    implementation 'com.google.mediapipe:tasks-vision:0.10.14'
+}
